@@ -22,7 +22,7 @@
         "children": [],
         "isRemovable": true,
         "filePath": "vb/lambda.js",
-        "code": "let AWS = require('aws-sdk');\nconst sns = new AWS.SNS();\n\nexports.handler = function (event, context, callback) {\n\n    let receiver = event['receiver'];\n    let sender = event['sender'];\n    let message = event['message'];\n\n    console.log(\"Sending message\", message, \"to receiver\", receiver);\n\n    callback(null, 'Successfully executed');\n    sns.publish({\n        Message: message,\n        MessageAttributes: {\n            'AWS.SNS.SMS.SMSType': {\n                DataType: 'String',\n                StringValue: 'Promotional'\n            },\n            'AWS.SNS.SMS.SenderID': {\n                DataType: 'String',\n                StringValue: sender\n            },\n        },\n        PhoneNumber: receiver\n    }).promise()\n        .then(data => {\n            // your code goes here\n        })\n        .catch(err => {\n            // error handling goes here\n        });\n}",
+        "code": "let AWS = require('aws-sdk');\nconst sns = new AWS.SNS();\n\nexports.handler = function (event, context, callback) {\n\n    let receiver = event['receiver'];\n    let sender = event['sender'];\n    let message = event['message'];\n\n    console.log(\"Sending message\", message, \"to receiver\", receiver);\n\n    callback(null, 'Successfully executed');\n    sns.publish({\n        Message: message,\n        MessageAttributes: {\n            'AWS.SNS.SMS.SMSType': {\n                DataType: 'String',\n                StringValue: 'Transactional'\n            },\n            'AWS.SNS.SMS.SenderID': {\n                DataType: 'String',\n                StringValue: sender\n            }\n        },\n        PhoneNumber: receiver\n    }).promise()\n        .then(data => {\n            // your code goes here\n        })\n        .catch(err => {\n            // error handling goes here\n        });\n}",
         "triggers": [
           {
             "resourceName": "apigapNortheast1smssendSMSpost",
@@ -35,6 +35,14 @@
           "timeout": 60,
           "memory": 128,
           "layers": []
+        },
+        "testCases": {
+          "483683d9-4b60-4ff7-97ec-4ce71e90918c": {
+            "id": "483683d9-4b60-4ff7-97ec-4ce71e90918c",
+            "name": "Unnamed event",
+            "functionId": "48efc6c9-e63f-4c70-bf5c-91868abd0fee",
+            "event": "{\n    \"receiver\": \"+919650376664\",\n    \"sender\": \"vb\",\n    \"message\": \"punchin ho gaya vbatthjah\"\n}"
+          }
         }
       }
     },
@@ -108,7 +116,7 @@
     "projectRegion": "ap-northeast-1",
     "platform": "AWS",
     "platformRegions": {},
-    "lastSave": 1560857449213
+    "lastSave": 1560859551278
   },
   "VCS_STATE": {
     "provider": "GitHub",
